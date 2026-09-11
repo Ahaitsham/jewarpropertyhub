@@ -6,9 +6,9 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function main() {
-  const email = process.env.SEED_ADMIN_EMAIL || 'ahtshamsaifi345@gmail.com';
-  const password = process.env.SEED_ADMIN_PASSWORD || 'ChangeMe123!';
-  const name = process.env.SEED_ADMIN_NAME || 'Ahaitsham Khan';
+  const email = process.env.SEED_ADMIN_EMAIL;
+  const password = process.env.SEED_ADMIN_PASSWORD;
+  const name = process.env.SEED_ADMIN_NAME;
 
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {
