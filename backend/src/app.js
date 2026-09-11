@@ -15,23 +15,17 @@ const ownerPortalRoutes = require('./routes/ownerPortalRoutes');
 const { notFound, errorHandler } = require('./middleware/errorHandler');
 
 const app = express();
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://jewarpropertyhub.vercel.app",
-];
+const corsOptions = {
+  origin: "https://jewarpropertyhub.vercel.app",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  })
-);
+app.use(cors(corsOptions));
+
+// Explicitly handle preflight
+app.options("*", cors(corsOptions));
 
 app.use(helmet());
 app.use(
