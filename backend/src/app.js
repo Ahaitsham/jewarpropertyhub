@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const cors = require("cors");
 
 const authRoutes = require('./routes/authRoutes');
 const propertyPublicRoutes = require('./routes/propertyPublicRoutes');
@@ -14,6 +15,23 @@ const ownerPortalRoutes = require('./routes/ownerPortalRoutes');
 const { notFound, errorHandler } = require('./middleware/errorHandler');
 
 const app = express();
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://jewarpropertyhub.vercel.app",
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 
 app.use(helmet());
 app.use(
